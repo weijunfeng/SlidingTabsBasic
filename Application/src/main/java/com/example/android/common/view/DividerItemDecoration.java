@@ -19,6 +19,8 @@ package com.example.android.common.view;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewCompat;
@@ -28,14 +30,11 @@ import android.view.View;
 
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
+    public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;
+    public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
     private static final int[] ATTRS = new int[]{
             android.R.attr.listDivider
     };
-
-    public static final int HORIZONTAL_LIST = LinearLayoutManager.HORIZONTAL;
-
-    public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
-
     private Drawable mDivider;
 
     private int mOrientation;
@@ -43,6 +42,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     public DividerItemDecoration(Context context, int orientation) {
         final TypedArray a = context.obtainStyledAttributes(ATTRS);
         mDivider = a.getDrawable(0);
+//        mDivider = new ColorDrawable(Color.RED);
         a.recycle();
         setOrientation(orientation);
     }
@@ -63,10 +63,24 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
+//    @Override
+//    public void onDrawOver(Canvas c, RecyclerView parent) {
+//        super.onDrawOver(c, parent);
+//    }
+
+    @Override
+    public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+        if (mOrientation == VERTICAL_LIST) {
+            drawVertical(c, parent);
+        } else {
+            drawHorizontal(c, parent);
+        }
+    }
+
     public void drawVertical(Canvas c, RecyclerView parent) {
         final int left = parent.getPaddingLeft();
         final int right = parent.getWidth() - parent.getPaddingRight();
-
+        Paint paint = new Paint();
         final int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
@@ -77,13 +91,15 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             final int bottom = top + mDivider.getIntrinsicHeight();
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
+//            paint.setColor(Color.RED);
+//            c.drawRect(left, top, right, bottom, paint);
         }
     }
 
     public void drawHorizontal(Canvas c, RecyclerView parent) {
         final int top = parent.getPaddingTop();
         final int bottom = parent.getHeight() - parent.getPaddingBottom();
-
+        Paint paint = new Paint();
         final int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
@@ -92,8 +108,10 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             final int left = child.getRight() + params.rightMargin +
                     Math.round(ViewCompat.getTranslationX(child));
             final int right = left + mDivider.getIntrinsicHeight();
+            paint.setColor(Color.RED);
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
+//            c.drawRect(left, top, right, bottom, paint);
         }
     }
 

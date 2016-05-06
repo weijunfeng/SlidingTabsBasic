@@ -107,6 +107,7 @@ public class SlidingTabLayout2 extends RecyclerView {
 
         // Thin underline along the entire bottom edge
         canvas.drawRect(0, height - 20, getWidth(), height, paint);
+        super.onDraw(canvas);
     }
 
     private void populateTabStrip() {

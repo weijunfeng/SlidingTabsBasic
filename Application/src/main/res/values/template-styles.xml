@@ -22,7 +22,9 @@
 
     <style name="Theme.Sample" parent="Theme.Base" />
 
-    <style name="AppTheme" parent="Theme.Sample" />
+    <style name="AppTheme" parent="Theme.Sample" >
+            <item name="android:listDivider">@drawable/divider_bg</item>
+    </style>
     <!-- Widget styling -->
 
     <style name="Widget" />
